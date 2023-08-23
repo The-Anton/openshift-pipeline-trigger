@@ -1,0 +1,28 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: sample-rest-app
+  namespace: devconsole-qe-upload
+spec:
+  params:
+    - description: Repository URL
+      name: url
+      type: string
+    - description: PR number
+      name: pullNumber
+      type: string
+  tasks:
+    - name: sample-hello-task
+      params:
+        - name: url
+          value: $(params.url)
+        - name: pullNumber
+          value: $(params.pullNumber)
+      taskRef:
+        kind: Task
+        name: sample-hello-task
+      workspaces:
+        - name: results-temp
+          workspace: my-workspace
+  workspaces:
+    - name: my-workspace

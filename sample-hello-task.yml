@@ -1,0 +1,26 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: sample-hello-task
+  namespace: devconsole-qe-upload
+spec:
+  params:
+    - description: Repository URL
+      name: url
+      type: string
+    - description: PR pull number
+      name: pullNumber
+      type: string
+  steps:
+      image: 'registry.access.redhat.com/ubi9/ubi:latest'
+      name: get-url
+      resources: {}
+      script: |
+        #!/bin/sh
+        echo Repository URL:
+
+        echo $(params.url)
+  workspaces:
+    - description: The folder where we write the results
+      mountPath: /results
+      name: results-temp
